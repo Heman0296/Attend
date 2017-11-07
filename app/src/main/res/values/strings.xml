@@ -21,4 +21,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Strings For Volley Errors-->
+    <string name="error_network_timeout">Network Timeout</string>
+    <string name="error_auth_failure">Authentication Failure</string>
+    <string name="error_server">Server Error</string>
+    <string name="error_network">Network Error</string>
+    <string name="error_parse">Error in Parsing</string>
+    <string name="error_unknown">Error is Unknown</string>
 </resources>
