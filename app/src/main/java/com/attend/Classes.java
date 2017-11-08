@@ -27,11 +27,11 @@ public class Classes extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        prepareMovieData();
+        prepareClassesData();
         return rootView;
     }
 
-    private void prepareMovieData() {
+    private void prepareClassesData() {
         ClassList classObject = new ClassList("Mad Max: Fury Road", "Action & Adventure", "2015");
         classList.add(classObject);
 

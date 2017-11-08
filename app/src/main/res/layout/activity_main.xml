@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_roll_no"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginRight="15dp">
 
         <EditText
             android:id="@+id/input_roll_no"
@@ -24,18 +26,15 @@
         android:id="@+id/input_layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="70dp"
-        app:passwordToggleEnabled="true"
         app:passwordToggleTint="#EC407A">
 
         <EditText
             android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/input_layout_roll_no"
             android:hint="Password"
             android:inputType="textPassword" />
 
@@ -43,14 +42,11 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/input_layout_password"
-        android:layout_alignStart="@+id/input_layout_password"
-        android:layout_below="@+id/input_layout_password"
-        android:layout_marginTop="30dp"
-        android:background="#673AB7"
+        android:background="@drawable/custombutton"
         android:text="Sign In"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_marginTop="10dp"/>
 
-</RelativeLayout>
+</LinearLayout>

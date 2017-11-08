@@ -130,8 +130,8 @@ public class Home extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    Calendar calendar = new Calendar();
-                    return calendar;
+                    AttendanceSummary attendanceSummary = new AttendanceSummary();
+                    return attendanceSummary;
                 case 1:
                     Classes classes = new Classes();
                     return classes;
@@ -152,7 +152,7 @@ public class Home extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "CALENDAR";
+                    return "SUMMARY";
                 case 1:
                     return "CLASSES";
                 case 2:
