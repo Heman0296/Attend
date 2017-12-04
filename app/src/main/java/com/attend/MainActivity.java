@@ -3,6 +3,7 @@ package com.attend;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.attend.routes.FaceRecognitionRoutes;
 import com.attend.routes.StudentRoutes;
@@ -14,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*getSubjectAttendanceSummary("1140917", "IT-401");*/
+        getStudentDetails("1140917");
     }
 
     // TODO: Test code to be removed
@@ -23,6 +26,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompletion(Models.Student student) {
                 //Information stored in student object
+                Log.v("MainActivity", student.message + " " + student.name);
+            }
+        });
+    }
+
+    // TODO: Test code to be removed
+    public void getSubjectAttendanceSummary(String rollno, String subject) {
+        StudentRoutes studentRoutes = new StudentRoutes();
+        studentRoutes.getSubjectAttendanceSummary(rollno, subject, new VolleyHandler.ApiResponse<Models.SubjectAttendanceSummary>() {
+            @Override
+            public void onCompletion(Models.SubjectAttendanceSummary subjectAttendanceSummary) {
+                //Information stored in student object
+                Log.v("MainActivity", subjectAttendanceSummary.message + " " + subjectAttendanceSummary.total_attendance + " " + subjectAttendanceSummary.total_present);
             }
         });
     }

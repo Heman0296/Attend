@@ -16,13 +16,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
 
-            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
         <activity android:name=".ResetPassword">
 
@@ -38,11 +36,11 @@
             android:name=".Home"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".MarkAttendance">
 
@@ -54,7 +52,13 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".AttendanceSummaryDetail"></activity>
+        <activity android:name=".AttendanceSummaryDetail">
+         <!--   <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
     </application>
 
 </manifest>
