@@ -15,8 +15,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*getSubjectAttendanceSummary("1140917", "IT-401");*/
-        getStudentDetails("1140917");
+        //getClassesOfDay("1140917");
+        getAttendanceSummaryAllSubjects("1140917");
+        //getStudentDetails("1140917");
     }
 
     // TODO: Test code to be removed
@@ -39,6 +40,32 @@ public class MainActivity extends AppCompatActivity {
             public void onCompletion(Models.SubjectAttendanceSummary subjectAttendanceSummary) {
                 //Information stored in student object
                 Log.v("MainActivity", subjectAttendanceSummary.message + " " + subjectAttendanceSummary.total_attendance + " " + subjectAttendanceSummary.total_present);
+            }
+        });
+    }
+
+    // TODO: Test code to be removed
+   /* public void getClassesOfDay(String rollno) {
+        StudentRoutes studentRoutes = new StudentRoutes();
+        studentRoutes.getClassesOfDay(rollno, new VolleyHandler.ApiResponse<Models.ClassesOfDay[]>() {
+            @Override
+           *//* public void onCompletion(Models.ClassesOfDay[] classesOfDay) {
+                //Information stored in student object
+                Log.v("MainActivity", classesOfDay.bluetooth_address);
+            }*//*
+        });
+    }*/
+
+    // TODO: Test code to be removed
+    public void getAttendanceSummaryAllSubjects(String rollno) {
+        StudentRoutes studentRoutes = new StudentRoutes();
+        studentRoutes.getAttendanceSummaryAllSubjects(rollno, new VolleyHandler.ApiResponse<Models.AttendanceSummaryAllSubjects[]>() {
+            @Override
+            public void onCompletion(Models.AttendanceSummaryAllSubjects[] attendanceSummaryAllSubjects) {
+                //Information stored in student object
+                for(int i=0; i < attendanceSummaryAllSubjects.length; i++) {
+                    Log.i("MainActivity", attendanceSummaryAllSubjects[i].subject);
+                }
             }
         });
     }

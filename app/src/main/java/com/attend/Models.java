@@ -13,6 +13,7 @@ public class Models {
         public String year;
         public String branch;
         public String section;
+        public String image_path;
         public String message;
     }
 
@@ -24,10 +25,11 @@ public class Models {
 
     public static class ClassesOfDay {
         public String subject;
-        public String classLocation;
-        public String timeOfClass;
-        public String faculty;
-        public String bluetoothID;
+        public String classroom;
+        public String begin_time;
+        public String end_time;
+        public String faculty_name;
+        public String bluetooth_address;
         public String message;
     }
 
@@ -39,8 +41,8 @@ public class Models {
 
     public static class AttendanceSummaryAllSubjects {
         public String subject;
-        public int total;
-        public int present;
+        public String total_attendance;
+        public String total_present;
         public String message;
     }
 

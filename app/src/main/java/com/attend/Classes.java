@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.attend.routes.StudentRoutes;
+import com.attend.utils.VolleyHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,59 +30,22 @@ public class Classes extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        prepareClassesData();
+        getClassesOfDay("1140917");
         return rootView;
     }
 
-    private void prepareClassesData() {
-        ClassList classObject = new ClassList("Mad Max: Fury Road", "Action & Adventure", "2015");
-        classList.add(classObject);
+    public void getClassesOfDay(String rollno) {
+        StudentRoutes studentRoutes = new StudentRoutes();
+        studentRoutes.getClassesOfDay(rollno, new VolleyHandler.ApiResponse<Models.ClassesOfDay[]>() {
+            @Override
+            public void onCompletion(Models.ClassesOfDay[] classesOfDay) {
+                for(int i = 0; i < classesOfDay.length; i++){
+                    ClassList classObject = new ClassList(classesOfDay[i].subject.toString(), classesOfDay[i].classroom.toString(), classesOfDay[i].begin_time.toString().substring(0,4), classesOfDay[i].end_time.toString().substring(0,4), classesOfDay[i].faculty_name.toString(), classesOfDay[i].bluetooth_address.toString());
+                    classList.add(classObject);
+                }
+                mAdapter.notifyDataSetChanged();
+            }
 
-        classObject = new ClassList("Inside Out", "Animation, Kids & Family", "2015");
-        classList.add(classObject);
-
-        classObject = new ClassList("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
-        classList.add(classObject);
-
-        classObject = new ClassList("Shaun the Sheep", "Animation", "2015");
-        classList.add(classObject);
-
-        classObject = new ClassList("The Martian", "Science Fiction & Fantasy", "2015");
-        classList.add(classObject);
-
-        classObject = new ClassList("Mission: Impossible Rogue Nation", "Action", "2015");
-        classList.add(classObject);
-
-        classObject = new ClassList("Up", "Animation", "2009");
-        classList.add(classObject);
-
-        classObject = new ClassList("Star Trek", "Science Fiction", "2009");
-        classList.add(classObject);
-
-        classObject = new ClassList("The LEGO Movie", "Animation", "2014");
-        classList.add(classObject);
-
-        classObject = new ClassList("Iron Man", "Action & Adventure", "2008");
-        classList.add(classObject);
-
-        classObject = new ClassList("Aliens", "Science Fiction", "1986");
-        classList.add(classObject);
-
-        classObject = new ClassList("Chicken Run", "Animation", "2000");
-        classList.add(classObject);
-
-        classObject = new ClassList("Back to the Future", "Science Fiction", "1985");
-        classList.add(classObject);
-
-        classObject = new ClassList("Raiders of the Lost Ark", "Action & Adventure", "1981");
-        classList.add(classObject);
-
-        classObject = new ClassList("Goldfinger", "Action & Adventure", "1965");
-        classList.add(classObject);
-
-        classObject = new ClassList("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014");
-        classList.add(classObject);
-
-        mAdapter.notifyDataSetChanged();
+        });
     }
 }

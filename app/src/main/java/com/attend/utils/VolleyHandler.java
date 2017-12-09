@@ -1,24 +1,16 @@
 package com.attend.utils;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.attend.AppController;
-import com.attend.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,7 +93,13 @@ public class VolleyHandler {
                         ApiResult res = new ApiResult();
                         try {
                             Integer success = response.getInt("status");
-                            res.data = response.getJSONObject("data");
+                            try {
+                                res.data = response.getJSONObject("data");
+                            }
+                            catch(Exception e) {
+                                res.data = response.getJSONArray("data");
+                            }
+                            Log.i("VolleyHandler", res.data.toString());
                             res.message = response.getString("message");
                             res.success = success;
 
@@ -117,6 +115,7 @@ public class VolleyHandler {
                 ApiResult res = new ApiResult();
                 res.success = -1;
                 res.message = displayVolleyResponseError(error);
+                Log.i("VolleyHandler", error.toString());
                 completion.onCompletion(res);
             }
         }
@@ -224,19 +223,20 @@ public class VolleyHandler {
 
     //TODO: This function is broken, error in retrieving strings
     private String displayVolleyResponseError(VolleyError error) {
-        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-            return Resources.getSystem().getString(R.string.error_network_timeout);
-        } else if (error instanceof AuthFailureError) {
-            return Resources.getSystem().getString(R.string.error_auth_failure);
-        } else if (error instanceof ServerError) {
-            return Resources.getSystem().getString(R.string.error_server);
-        } else if (error instanceof NetworkError) {
-            return Resources.getSystem().getString(R.string.error_network);
-        } else if (error instanceof ParseError) {
-            return Resources.getSystem().getString(R.string.error_parse);
-        } else {
-            return Resources.getSystem().getString(R.string.error_unknown);
-        }
+        return "Correct this";
+//        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//            return Resources.getSystem().getString(R.string.error_network_timeout);
+//        } else if (error instanceof AuthFailureError) {
+//            return Resources.getSystem().getString(R.string.error_auth_failure);
+//        } else if (error instanceof ServerError) {
+//            return Resources.getSystem().getString(R.string.error_server);
+//        } else if (error instanceof NetworkError) {
+//            return Resources.getSystem().getString(R.string.error_network);
+//        } else if (error instanceof ParseError) {
+//            return Resources.getSystem().getString(R.string.error_parse);
+//        } else {
+//            return Resources.getSystem().getString(R.string.error_unknown);
+//        }
     }
 
 }

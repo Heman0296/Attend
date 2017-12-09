@@ -163,7 +163,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/degree" />
+                            android:src="@drawable/branch" />
 
                         <TextView
                             android:id="@+id/branch"

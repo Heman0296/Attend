@@ -1,5 +1,7 @@
 package com.attend.routes;
 
+import android.util.Log;
+
 import com.attend.Models;
 import com.attend.utils.Constants;
 import com.attend.utils.VolleyHandler;
@@ -7,6 +9,8 @@ import com.attend.utils.VolleyHandler.ApiResponse;
 import com.attend.utils.VolleyHandler.ApiResult;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -19,7 +23,9 @@ public class StudentRoutes {
 
     public void getDetails(String rollno, final ApiResponse<Models.Student> completion) {
 
-        String url = Constants.URL_GET_STUDENT_DETAILS + rollno;
+        //String url = Constants.URL_GET_STUDENT_DETAILS + rollno;
+        //TODO delete below line
+        String url = Constants.URL_GET_STUDENT_DETAILS;
         final Models.Student student = new Models.Student();
 
         volleyHandler.RequestApi(url, new ApiResponse<ApiResult>() {
@@ -59,39 +65,62 @@ public class StudentRoutes {
 
     }
 
-    public void getClassesOfDay(String rollno, final VolleyHandler.ApiResponse<Models.ClassesOfDay> completion) {
+    public void getClassesOfDay(String rollno, final VolleyHandler.ApiResponse<Models.ClassesOfDay[]> completion) {
 
-        String url = Constants.URL_GET_CLASSES_OF_DAY + rollno;
-        final Models.ClassesOfDay classesOfDay = new Models.ClassesOfDay();
+        String url = Constants.URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS + rollno;
+        //TODO: Remove this line
+        url = Constants.URL_GET_CLASSES_OF_DAY;
+        final Models.ClassesOfDay classesOfDays[] = null;
 
         volleyHandler.RequestApi(url, new VolleyHandler.ApiResponse<VolleyHandler.ApiResult>() {
             @Override
             public void onCompletion(VolleyHandler.ApiResult res) {
-                if (res.success == 200 && res.dataIsObject()) {
-                    JSONObject userObj = res.getDataAsObject();
-                    Models.ClassesOfDay classesOfDay = new Gson().fromJson(userObj.toString(), Models.ClassesOfDay.class);
-                    classesOfDay.message = res.message;
-                    completion.onCompletion(classesOfDay);
+                if (res.success == 200 && res.dataIsArray()) {
+                    JSONArray userArray = res.getDataAsArray();
+                    Log.i("StudentRoutes", userArray.toString());
+                    Models.ClassesOfDay[] classesOfDays = new Models.ClassesOfDay[userArray.length()];
+                    for (int i = 0; i < userArray.length(); i++) {
+                        try {
+                            classesOfDays[i] = new Gson().fromJson(userArray.getJSONObject(i).toString(), Models.ClassesOfDay.class);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.i("StudentRoutes", userArray.toString());
+                    ///Models.AttendanceSummaryAllSubjects attendanceSummaryAllSubjects = new Gson().fromJson(userObj.toString(), Models.AttendanceSummaryAllSubjects.class);
+                    //attendanceSummaryAllSubjects.message = res.message;
+                    completion.onCompletion(classesOfDays);
                 } else {
-                    completion.onCompletion(classesOfDay);
+                    completion.onCompletion(classesOfDays);
                 }
             }
         });
-
     }
 
-    public void getAttendanceSummaryAllSubjects(String rollno, final VolleyHandler.ApiResponse<Models.AttendanceSummaryAllSubjects> completion) {
+    public void getAttendanceSummaryAllSubjects(String rollno, final VolleyHandler.ApiResponse<Models.AttendanceSummaryAllSubjects[]> completion) {
 
         String url = Constants.URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS + rollno;
-        final Models.AttendanceSummaryAllSubjects attendanceSummaryAllSubjects = new Models.AttendanceSummaryAllSubjects();
+        //TODO: Remove this line
+        url = Constants.URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS;
+        final Models.AttendanceSummaryAllSubjects attendanceSummaryAllSubjects[] = null;
 
         volleyHandler.RequestApi(url, new VolleyHandler.ApiResponse<VolleyHandler.ApiResult>() {
             @Override
             public void onCompletion(VolleyHandler.ApiResult res) {
-                if (res.success == 200 && res.dataIsObject()) {
-                    JSONObject userObj = res.getDataAsObject();
-                    Models.AttendanceSummaryAllSubjects attendanceSummaryAllSubjects = new Gson().fromJson(userObj.toString(), Models.AttendanceSummaryAllSubjects.class);
-                    attendanceSummaryAllSubjects.message = res.message;
+                if (res.success == 200 && res.dataIsArray()) {
+                    JSONArray userArray = res.getDataAsArray();
+                    Log.i("StudentRoutes", userArray.toString());
+                    Models.AttendanceSummaryAllSubjects[] attendanceSummaryAllSubjects = new Models.AttendanceSummaryAllSubjects[userArray.length()];
+                    for(int i = 0; i < userArray.length(); i++) {
+                        try {
+                            attendanceSummaryAllSubjects[i] = new Gson().fromJson(userArray.getJSONObject(i).toString(), Models.AttendanceSummaryAllSubjects.class);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.i("StudentRoutes", userArray.toString());
+                    ///Models.AttendanceSummaryAllSubjects attendanceSummaryAllSubjects = new Gson().fromJson(userObj.toString(), Models.AttendanceSummaryAllSubjects.class);
+                    //attendanceSummaryAllSubjects.message = res.message;
                     completion.onCompletion(attendanceSummaryAllSubjects);
                 } else {
                     completion.onCompletion(attendanceSummaryAllSubjects);
