@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.attend.routes.StudentRoutes;
+import com.attend.utils.VolleyHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,27 +37,24 @@ public class AttendanceSummary extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        prepareAttendanceSummary();
+        getAttendanceSummaryAllSubjects("1140917");
         return rootView;
     }
 
-    private void prepareAttendanceSummary(){
-        AttendanceSummaryList summaryObject = new AttendanceSummaryList("Autometa Lecture","80%");
-        summaryList.add(summaryObject);
-
-        summaryObject = new AttendanceSummaryList("Autometa Tut","80%");
-        summaryList.add(summaryObject);
-
-        summaryObject = new AttendanceSummaryList("Autometa Lecture","80%");
-        summaryList.add(summaryObject);
-
-        summaryObject = new AttendanceSummaryList("Autometa Lecture","80%");
-        summaryList.add(summaryObject);
-
-        summaryObject = new AttendanceSummaryList("Autometa Lecture","80%");
-        summaryList.add(summaryObject);
-
-        summaryObject = new AttendanceSummaryList("Autometa Lecture","80%");
-        summaryList.add(summaryObject);
+    public void getAttendanceSummaryAllSubjects(String rollno) {
+        StudentRoutes studentRoutes = new StudentRoutes();
+        studentRoutes.getAttendanceSummaryAllSubjects(rollno, new VolleyHandler.ApiResponse<Models.AttendanceSummaryAllSubjects[]>() {
+            @Override
+            public void onCompletion(Models.AttendanceSummaryAllSubjects[] attendanceSummaryAllSubjects) {
+                //Information stored in student object
+                for(int i=0; i < attendanceSummaryAllSubjects.length; i++) {
+                    Double percentage = ((Double.parseDouble(attendanceSummaryAllSubjects[i].total_present)/Double.parseDouble(attendanceSummaryAllSubjects[i].total_attendance))*100);
+                    String subjectPercentage = String.format("%.1f", percentage);
+                    AttendanceSummaryList attendanceSummaryListObject = new AttendanceSummaryList(attendanceSummaryAllSubjects[i].subject,subjectPercentage);
+                    summaryList.add(attendanceSummaryListObject);
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }
