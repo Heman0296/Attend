@@ -34,8 +34,8 @@ public class Models {
     }
 
     public static class SubjectAttendanceSummary {
-        public int total_present;
-        public int total_attendance;
+        public String total_present;
+        public String total_attendance;
         public String message;
     }
 

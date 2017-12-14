@@ -21,8 +21,8 @@ public class Constants {
     public static final String HOST = "http://192.168.43.153:5000";
     public static final String URL_GET_STUDENT_DETAILS = "http://www.mocky.io/v2/5a2bc62b2f0000c90a03930d";
     public static final String URL_CLASSIFY = HOST + "/api/openface/classify";
-    public static final String URL_GET_CLASSES_OF_DAY = "http://www.mocky.io/v2/5a26a81d300000d2150e889a";
-    public static final String URL_GET_SUBJECT_ATTENDANCE_SUMMARY = "http://www.mocky.io/v2/5a2693ef3000004c150e8818";
+    public static final String URL_GET_CLASSES_OF_DAY = "http://www.mocky.io/v2/5a3148fe2e0000d21ee3b462";
+    public static final String URL_GET_SUBJECT_ATTENDANCE_SUMMARY = "http://www.mocky.io/v2/5a31059f2e00004e13e3b29d";
     public static final String URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS = "http://www.mocky.io/v2/5a2bb9d42f00007a080392ff";
     public static final String URL_GET_SUBJECT_ATTENDANCE_DATEWISE = HOST + "/api/student/attendance_details_for_subject/";
     public static final String URL_JSON_ARRAY = "http://api.androidhive.info/volley/person_array.json";

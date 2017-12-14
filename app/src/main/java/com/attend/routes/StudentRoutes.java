@@ -47,6 +47,8 @@ public class StudentRoutes {
     public void getSubjectAttendanceSummary(String rollno, String subject, final VolleyHandler.ApiResponse<Models.SubjectAttendanceSummary> completion) {
 
         String url = Constants.URL_GET_SUBJECT_ATTENDANCE_SUMMARY + rollno + "/" + subject;
+        //TODO Remove the below line
+        url = Constants.URL_GET_SUBJECT_ATTENDANCE_SUMMARY;
         final Models.SubjectAttendanceSummary subjectAttendanceSummary = new Models.SubjectAttendanceSummary();
 
         volleyHandler.RequestApi(url, new VolleyHandler.ApiResponse<VolleyHandler.ApiResult>() {

@@ -7,6 +7,7 @@ package com.attend;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
+import android.webkit.CookieManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,20 +17,16 @@ import com.attend.utils.LruBitmapCache;
 
 public class AppController extends Application {
 
+    //TODO Manage all back button actions for each activity and manage navigation bars for all
+
     public static final String TAG = AppController.class
             .getSimpleName();
-
-    private RequestQueue mRequestQueue;
-    private ImageLoader mImageLoader;
-
     private static AppController mInstance;
     private static AppController mContext;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mInstance = this;
-    }
+    private byte[] data;
+    private CookieManager cookieManager;
+    private RequestQueue mRequestQueue;
+    private ImageLoader mImageLoader;
 
     public static synchronized AppController getInstance() {
         return mInstance;
@@ -37,6 +34,16 @@ public class AppController extends Application {
 
     public static Context getContext() {
         return mContext;
+    }
+
+    public byte[] getData() {return data;}
+
+    public void setData(byte[] data) {this.data = data;}
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mInstance = this;
     }
 
     public RequestQueue getRequestQueue() {
@@ -72,4 +79,5 @@ public class AppController extends Application {
             mRequestQueue.cancelAll(tag);
         }
     }
+
 }

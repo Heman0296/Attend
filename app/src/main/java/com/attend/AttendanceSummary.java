@@ -31,7 +31,7 @@ public class AttendanceSummary extends Fragment {
         View rootView = inflater.inflate(R.layout.activity_classes, container,false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        mAdapter = new AttendanceSummaryAdapter(summaryList);
+        mAdapter = new AttendanceSummaryAdapter(summaryList,this.getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

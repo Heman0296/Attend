@@ -1,9 +1,14 @@
 package com.attend;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.attend.routes.FaceRecognitionRoutes;
 import com.attend.routes.StudentRoutes;
@@ -15,9 +20,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getClassesOfDay("1140917");
-        getAttendanceSummaryAllSubjects("1140917");
-        //getStudentDetails("1140917");
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.roll_no);
+                String roll_number = textInputLayout.getEditText().getText().toString();
+                Log.v("MainActivity", roll_number);
+                textInputLayout = (TextInputLayout) findViewById(R.id.password);
+                String password = textInputLayout.getEditText().getText().toString();
+                Log.v("MainActivity", password);
+
+                //TODO add here the code for login authentication
+
+                boolean loginStatus = true;
+
+                if(loginStatus){
+                    SharedPreferences sharedPreferences = getSharedPreferences("studentDetails", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("roll_number",roll_number);
+                    editor.apply();
+
+                    Intent intent = new Intent(MainActivity.this.getApplication(), Home.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     // TODO: Test code to be removed

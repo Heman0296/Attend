@@ -1,10 +1,12 @@
 package com.attend;
 
+import java.io.Serializable;
+
 /**
  * Created by Himanshu on 11/5/2017.
  */
 
-public class ClassList {
+public class ClassList implements Serializable {
 
     private String subject, classroom, begin_time, end_time, faculty_name, bluetooth_address;
 

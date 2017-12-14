@@ -28,5 +28,8 @@
     <string name="error_server">Server Error</string>
     <string name="error_network">Network Error</string>
     <string name="error_parse">Error in Parsing</string>
+    <string name="permission_camera_rationale">Need Permission for taking photographs</string>
+    <string name="ok">Ok</string>
+    <string name="no_camera_permission">Please Grant Camera Permission</string>
     <string name="error_unknown">Error is Unknown</string>
 </resources>
