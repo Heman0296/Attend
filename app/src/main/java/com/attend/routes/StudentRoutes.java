@@ -132,24 +132,37 @@ public class StudentRoutes {
 
     }
 
-    public void getSubjectAttendanceDatewise(String rollno, String subject, final VolleyHandler.ApiResponse<Models.SubjectAttendanceDatewise> completion) {
+    public void getSubjectAttendanceDatewise(String rollno, String subject, final VolleyHandler.ApiResponse<Models.SubjectAttendanceDatewise[]> completion) {
 
         String url = Constants.URL_GET_SUBJECT_ATTENDANCE_DATEWISE + rollno + "/" + subject;
-        final Models.SubjectAttendanceDatewise subjectAttendanceDatewise = new Models.SubjectAttendanceDatewise();
+        //TODO remove the below line
+        url = Constants.URL_GET_SUBJECT_ATTENDANCE_DATEWISE;
+        final Models.SubjectAttendanceDatewise subjectAttendanceDatewise[] = null;
 
         volleyHandler.RequestApi(url, new VolleyHandler.ApiResponse<VolleyHandler.ApiResult>() {
             @Override
             public void onCompletion(VolleyHandler.ApiResult res) {
-                if (res.success == 200 && res.dataIsObject()) {
-                    JSONObject userObj = res.getDataAsObject();
-                    Models.SubjectAttendanceDatewise subjectAttendanceDatewise = new Gson().fromJson(userObj.toString(), Models.SubjectAttendanceDatewise.class);
-                    subjectAttendanceDatewise.message = res.message;
+                if (res.success == 200 && res.dataIsArray()) {
+                    JSONArray userArray = res.getDataAsArray();
+                    Log.i("StudentRoutes", "First");
+                    Models.SubjectAttendanceDatewise[] subjectAttendanceDatewise = new Models.SubjectAttendanceDatewise[userArray.length()];
+                    Log.i("StudentRoutes", "Second");
+                    for(int i = 0; i < userArray.length(); i++) {
+                        try {
+                            Log.i("StudentRoutes", "Third");
+                            subjectAttendanceDatewise[i] = new Gson().fromJson(userArray.getJSONObject(i).toString(), Models.SubjectAttendanceDatewise.class);
+                            Log.i("StudentRoutes", String.valueOf(subjectAttendanceDatewise.length));
+                        } catch (JSONException e) {
+                            Log.i("StudentRoutes", "Fourth");
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.i("StudentRoutes", "Fifth");
                     completion.onCompletion(subjectAttendanceDatewise);
                 } else {
                     completion.onCompletion(subjectAttendanceDatewise);
                 }
             }
         });
-
     }
 }

@@ -48,7 +48,8 @@ public class Models {
 
     public static class SubjectAttendanceDatewise {
         public String date;
-        public String attendanceStatus;
+        public boolean presence_flag;
+        public int period;
         public String message;
     }
 }

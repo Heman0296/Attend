@@ -183,6 +183,7 @@ public class AttendanceSummaryAdapter extends RecyclerView.Adapter<AttendanceSum
             AttendanceSummaryList summaryObject = this.summaryList.get(position);
             Intent intent = new Intent(this.context, AttendanceSummaryDetail.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.putExtra("summaryObject", summaryObject);
             this.context.startActivity(intent);
         }
     }
