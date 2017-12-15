@@ -25,7 +25,7 @@ public class StudentRoutes {
 
         //String url = Constants.URL_GET_STUDENT_DETAILS + rollno;
         //TODO delete below line
-        String url = Constants.URL_GET_STUDENT_DETAILS;
+        String url = Constants.URL_GET_STUDENT_DETAILS + "1140917";
         final Models.Student student = new Models.Student();
 
         volleyHandler.RequestApi(url, new ApiResponse<ApiResult>() {
@@ -38,6 +38,27 @@ public class StudentRoutes {
                     completion.onCompletion(student);
                 } else {
                     completion.onCompletion(student);
+                }
+            }
+        });
+
+    }
+
+    public void login(String auth, final ApiResponse<Models.Login> completion) {
+
+        String url = Constants.URL_GET_TOKEN;
+        final Models.Login login = new Models.Login();
+
+        volleyHandler.RequestApiAuth(url, auth, new ApiResponse<ApiResult>() {
+            @Override
+            public void onCompletion(ApiResult res) {
+                if (res.success == 200 && res.dataIsObject()) {
+                    JSONObject userObj = res.getDataAsObject();
+                    Models.Login login = new Gson().fromJson(userObj.toString(), Models.Login.class);
+                    login.message = res.message;
+                    completion.onCompletion(login);
+                } else {
+                    completion.onCompletion(login);
                 }
             }
         });
@@ -67,11 +88,12 @@ public class StudentRoutes {
 
     }
 
+    //TODO: Function breaks for no classes
     public void getClassesOfDay(String rollno, final VolleyHandler.ApiResponse<Models.ClassesOfDay[]> completion) {
 
-        String url = Constants.URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS + rollno;
+        String url = Constants.URL_GET_CLASSES_OF_DAY + rollno;
         //TODO: Remove this line
-        url = Constants.URL_GET_CLASSES_OF_DAY;
+        url = Constants.URL_GET_CLASSES_OF_DAY + "1140805";
         final Models.ClassesOfDay classesOfDays[] = null;
 
         volleyHandler.RequestApi(url, new VolleyHandler.ApiResponse<VolleyHandler.ApiResult>() {
@@ -88,7 +110,7 @@ public class StudentRoutes {
                             e.printStackTrace();
                         }
                     }
-                    Log.i("StudentRoutes", userArray.toString());
+                    //Log.i("StudentRoutes", userArray.toString());
                     ///Models.AttendanceSummaryAllSubjects attendanceSummaryAllSubjects = new Gson().fromJson(userObj.toString(), Models.AttendanceSummaryAllSubjects.class);
                     //attendanceSummaryAllSubjects.message = res.message;
                     completion.onCompletion(classesOfDays);
@@ -103,7 +125,7 @@ public class StudentRoutes {
 
         String url = Constants.URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS + rollno;
         //TODO: Remove this line
-        url = Constants.URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS;
+        url = Constants.URL_GET_ATTENDANCE_SUMMARYY_ALL_SUBJECTS + "1140917";
         final Models.AttendanceSummaryAllSubjects attendanceSummaryAllSubjects[] = null;
 
         volleyHandler.RequestApi(url, new VolleyHandler.ApiResponse<VolleyHandler.ApiResult>() {
