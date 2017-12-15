@@ -52,4 +52,10 @@ public class Models {
         public int period;
         public String message;
     }
+
+    public static class Login {
+        public String token;
+        public String message;
+        public String duration;
+    }
 }

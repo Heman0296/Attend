@@ -1,8 +1,10 @@
 package com.attend.utils;
 
 import android.graphics.Bitmap;
+import android.util.Base64;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -118,8 +120,62 @@ public class VolleyHandler {
                 Log.i("VolleyHandler", error.toString());
                 completion.onCompletion(res);
             }
+
         }
         );
+
+        //In case the server is a bit slow and we experience timeout errors﹕ error => com.android.volley.TimeoutError
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        AppController.getInstance().addToRequestQueue(jsonRequest);
+
+    }
+
+    public void RequestApiAuth(String url, final String authToken, final ApiResponse<ApiResult> completion) {
+        Log.v("Performing request: ", url);
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ApiResult res = new ApiResult();
+                        try {
+                            Integer success = response.getInt("status");
+                            try {
+                                res.data = response.getJSONObject("data");
+                            }
+                            catch(Exception e) {
+                                res.data = response.getJSONArray("data");
+                            }
+                            Log.i("VolleyHandler", res.data.toString());
+                            res.message = response.getString("message");
+                            res.success = success;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            res.success = -1;
+                        }
+                        completion.onCompletion(res);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ApiResult res = new ApiResult();
+                res.success = -1;
+                res.message = displayVolleyResponseError(error);
+                Log.i("VolleyHandler", error.toString());
+                completion.onCompletion(res);
+            }
+
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String auth = authToken;
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+        };
 
         //In case the server is a bit slow and we experience timeout errors﹕ error => com.android.volley.TimeoutError
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
@@ -160,6 +216,60 @@ public class VolleyHandler {
             @Override
             protected Map<String, String> getParams() {
                 return params;
+            }
+
+        };
+
+        //Added for fb connect which timeout
+        strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        AppController.getInstance().addToRequestQueue(strRequest);
+    }
+
+    public void RequestApiPOSTAuth(String url, final String authToken, final Map<String, String> params, final ApiResponse<ApiResult> completion) {
+        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String responseString) {
+                        ApiResult res = new ApiResult();
+                        try {
+                            JSONObject response = new JSONObject(responseString);
+                            Integer success = response.getInt("status");
+                            res.success = success;
+                            res.data = response.getJSONObject("data");
+                            res.message = response.getString("message");
+                        } catch (JSONException e) {
+                            res.success = -1;
+                            e.printStackTrace();
+                        }
+                        completion.onCompletion(res);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        ApiResult res = new ApiResult();
+                        res.success = -1;
+                        res.message = displayVolleyResponseError(error);
+                        completion.onCompletion(res);
+                    }
+                })
+
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+//                String credentials = "username:password";
+//                String auth = "Basic "
+//                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                String auth = authToken;
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
             }
         };
 
