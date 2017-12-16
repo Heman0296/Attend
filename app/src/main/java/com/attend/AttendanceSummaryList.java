@@ -1,10 +1,12 @@
 package com.attend;
 
+import java.io.Serializable;
+
 /**
  * Created by Himanshu on 11/7/2017.
  */
 
-public class AttendanceSummaryList {
+public class AttendanceSummaryList implements Serializable {
     private String nameOfClass, percentage;
 
     public AttendanceSummaryList(String nameOfClass, String percentage) {

@@ -3,6 +3,7 @@ package com.attend.utils;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -30,6 +31,280 @@ public class VolleyHandler {
     //Create a singleton
     public static synchronized VolleyHandler getInstance() {
         return mInstance;
+    }
+
+    //Create a get request with the url to query, and a callback
+    public void RequestApi(String url, final ApiResponse<ApiResult> completion) {
+        Log.v("Performing request: ", url);
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ApiResult res = new ApiResult();
+                        try {
+                            Integer success = response.getInt("status");
+                            try {
+                                res.data = response.getJSONObject("data");
+                            }
+                            catch(Exception e) {
+                                res.data = response.getJSONArray("data");
+                            }
+                            Log.i("VolleyHandler", res.data.toString());
+                            res.message = response.getString("message");
+                            res.success = success;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            res.success = -1;
+                        }
+                        completion.onCompletion(res);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ApiResult res = new ApiResult();
+                res.success = -1;
+                res.message = displayVolleyResponseError(error);
+                Log.i("VolleyHandler", error.toString());
+                completion.onCompletion(res);
+            }
+
+        }
+        );
+
+        //In case the server is a bit slow and we experience timeout errors﹕ error => com.android.volley.TimeoutError
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        AppController.getInstance().addToRequestQueue(jsonRequest);
+
+    }
+
+    public void RequestApiAuth(String url, final String authToken, final ApiResponse<ApiResult> completion) {
+        Log.v("Performing request: ", url);
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ApiResult res = new ApiResult();
+                        try {
+                            Integer success = response.getInt("status");
+                            try {
+                                res.data = response.getJSONObject("data");
+                            }
+                            catch(Exception e) {
+                                res.data = response.getJSONArray("data");
+                            }
+                            Log.i("VolleyHandler", res.data.toString());
+                            res.message = response.getString("message");
+                            res.success = success;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            res.success = -1;
+                        }
+                        completion.onCompletion(res);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ApiResult res = new ApiResult();
+                res.success = -1;
+                res.message = displayVolleyResponseError(error);
+                Log.i("VolleyHandler", error.toString());
+                completion.onCompletion(res);
+            }
+
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String auth = authToken;
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+        };
+
+        //In case the server is a bit slow and we experience timeout errors﹕ error => com.android.volley.TimeoutError
+       // jsonRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        AppController.getInstance().addToRequestQueue(jsonRequest);
+
+    }
+
+    public void RequestApiPOST(String url, final Map<String, String> params, final ApiResponse<ApiResult> completion) {
+        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String responseString) {
+                        ApiResult res = new ApiResult();
+                        try {
+                            JSONObject response = new JSONObject(responseString);
+                            Integer success = response.getInt("status");
+                            res.success = success;
+                            res.data = response.getJSONObject("data");
+                            res.message = response.getString("message");
+                        } catch (JSONException e) {
+                            res.success = -1;
+                            e.printStackTrace();
+                        }
+                        completion.onCompletion(res);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        ApiResult res = new ApiResult();
+                        res.success = -1;
+                        res.message = displayVolleyResponseError(error);
+                        completion.onCompletion(res);
+                    }
+                })
+
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+
+        };
+
+        //Added for fb connect which timeout
+        strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        AppController.getInstance().addToRequestQueue(strRequest);
+    }
+
+    public void RequestApiPOSTAuth(String url, final String authToken, final Map<String, String> params, final ApiResponse<ApiResult> completion) {
+        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String responseString) {
+                        ApiResult res = new ApiResult();
+                        try {
+                            JSONObject response = new JSONObject(responseString);
+                            Integer success = response.getInt("status");
+                            res.success = success;
+                            res.data = response.getJSONObject("data");
+                            res.message = response.getString("message");
+                        } catch (JSONException e) {
+                            res.success = -1;
+                            e.printStackTrace();
+                        }
+                        completion.onCompletion(res);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        ApiResult res = new ApiResult();
+                        res.success = -1;
+                        res.message = displayVolleyResponseError(error);
+                        completion.onCompletion(res);
+                    }
+                })
+
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+//                String credentials = "username:password";
+//                String auth = "Basic "
+//                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                String auth = authToken;
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+        };
+
+        //Added for fb connect which timeout
+        strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        AppController.getInstance().addToRequestQueue(strRequest);
+    }
+
+    public void uploadImage(final Bitmap bitmap, String url, final ApiResponse<ApiResult> completion) {
+
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                String resultResponse = new String(response.data);
+                ApiResult res = new ApiResult();
+                res.success = -1;
+                try {
+                    JSONObject result = new JSONObject(resultResponse);
+                    Log.i("VolleyHandler", resultResponse);
+                    res.data = result.getJSONObject("data");
+                    res.success = result.getInt("status");
+                    res.message = result.getString("message");
+                    Log.i("Handler: ", String.valueOf(res.data));
+                } catch (JSONException e) {
+                    res.success = -1;
+                    e.printStackTrace();
+                }
+                completion.onCompletion(res);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ApiResult res = new ApiResult();
+                res.success = -1;
+                Log.i("VolleyHandler", error.toString());
+                res.message = displayVolleyResponseError(error);
+                completion.onCompletion(res);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                params.put("image", new DataPart("profile.png", getBytesFromBitmap(bitmap), "image/png"));
+                return params;
+            }
+        };
+        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(multipartRequest);
+    }
+
+    // convert from bitmap to byte array
+    private byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
+        return stream.toByteArray();
+    }
+
+    //TODO: This function is broken, error in retrieving strings
+    private String displayVolleyResponseError(VolleyError error) {
+        return "Correct this";
+//        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//            return Resources.getSystem().getString(R.string.error_network_timeout);
+//        } else if (error instanceof AuthFailureError) {
+//            return Resources.getSystem().getString(R.string.error_auth_failure);
+//        } else if (error instanceof ServerError) {
+//            return Resources.getSystem().getString(R.string.error_server);
+//        } else if (error instanceof NetworkError) {
+//            return Resources.getSystem().getString(R.string.error_network);
+//        } else if (error instanceof ParseError) {
+//            return Resources.getSystem().getString(R.string.error_parse);
+//        } else {
+//            return Resources.getSystem().getString(R.string.error_unknown);
+//        }
+    }
+
+    //create an interface with a callback method
+    public interface ApiResponse<T> {
+        void onCompletion(T result);
     }
 
     //Create an object to return the server's response
@@ -76,167 +351,6 @@ public class VolleyHandler {
             }
         }
 
-    }
-
-    //create an interface with a callback method
-    public interface ApiResponse<T> {
-        public void onCompletion(T result);
-    }
-
-    //Create a get request with the url to query, and a callback
-    public void RequestApi(String url, final ApiResponse<ApiResult> completion) {
-        Log.v("Performing request: ", url);
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        ApiResult res = new ApiResult();
-                        try {
-                            Integer success = response.getInt("status");
-                            try {
-                                res.data = response.getJSONObject("data");
-                            }
-                            catch(Exception e) {
-                                res.data = response.getJSONArray("data");
-                            }
-                            Log.i("VolleyHandler", res.data.toString());
-                            res.message = response.getString("message");
-                            res.success = success;
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            res.success = -1;
-                        }
-                        completion.onCompletion(res);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ApiResult res = new ApiResult();
-                res.success = -1;
-                res.message = displayVolleyResponseError(error);
-                Log.i("VolleyHandler", error.toString());
-                completion.onCompletion(res);
-            }
-        }
-        );
-
-        //In case the server is a bit slow and we experience timeout errors﹕ error => com.android.volley.TimeoutError
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
-        AppController.getInstance().addToRequestQueue(jsonRequest);
-
-    }
-
-    public void RequestApiPOST(String url, final Map<String, String> params, final ApiResponse<ApiResult> completion) {
-        StringRequest strRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String responseString) {
-                        ApiResult res = new ApiResult();
-                        try {
-                            JSONObject response = new JSONObject(responseString);
-                            Integer success = response.getInt("status");
-                            res.success = success;
-                            res.data = response.getJSONObject("data");
-                            res.message = response.getString("message");
-                        } catch (JSONException e) {
-                            res.success = -1;
-                            e.printStackTrace();
-                        }
-                        completion.onCompletion(res);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        ApiResult res = new ApiResult();
-                        res.success = -1;
-                        res.message = displayVolleyResponseError(error);
-                        completion.onCompletion(res);
-                    }
-                })
-
-        {
-            @Override
-            protected Map<String, String> getParams() {
-                return params;
-            }
-        };
-
-        //Added for fb connect which timeout
-        strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
-        AppController.getInstance().addToRequestQueue(strRequest);
-    }
-
-    public void uploadImage(final Bitmap bitmap, String url, final ApiResponse<ApiResult> completion) {
-
-        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                String resultResponse = new String(response.data);
-                ApiResult res = new ApiResult();
-                res.success = -1;
-                try {
-                    JSONObject result = new JSONObject(resultResponse);
-                    res.data = result.getJSONObject("data");
-                    res.success = result.getInt("status");
-                    res.message = result.getString("message");
-                    Log.i("Handler: ", String.valueOf(res.data));
-                } catch (JSONException e) {
-                    res.success = -1;
-                    e.printStackTrace();
-                }
-                completion.onCompletion(res);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ApiResult res = new ApiResult();
-                res.success = -1;
-                res.message = displayVolleyResponseError(error);
-                completion.onCompletion(res);
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                return params;
-            }
-
-            @Override
-            protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
-                params.put("image", new DataPart("profile.png", getBytesFromBitmap(bitmap), "image/png"));
-                return params;
-            }
-        };
-
-        AppController.getInstance().addToRequestQueue(multipartRequest);
-    }
-
-    // convert from bitmap to byte array
-    private byte[] getBytesFromBitmap(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
-        return stream.toByteArray();
-    }
-
-    //TODO: This function is broken, error in retrieving strings
-    private String displayVolleyResponseError(VolleyError error) {
-        return "Correct this";
-//        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//            return Resources.getSystem().getString(R.string.error_network_timeout);
-//        } else if (error instanceof AuthFailureError) {
-//            return Resources.getSystem().getString(R.string.error_auth_failure);
-//        } else if (error instanceof ServerError) {
-//            return Resources.getSystem().getString(R.string.error_server);
-//        } else if (error instanceof NetworkError) {
-//            return Resources.getSystem().getString(R.string.error_network);
-//        } else if (error instanceof ParseError) {
-//            return Resources.getSystem().getString(R.string.error_parse);
-//        } else {
-//            return Resources.getSystem().getString(R.string.error_unknown);
-//        }
     }
 
 }

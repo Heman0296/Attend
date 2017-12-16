@@ -23,6 +23,11 @@ public class Models {
         public String message;
     }
 
+    public static class MarkAttendanceOnServer{
+        public String marked;
+        public String message;
+    }
+
     public static class ClassesOfDay {
         public String subject;
         public String classroom;
@@ -30,12 +35,13 @@ public class Models {
         public String end_time;
         public String faculty_name;
         public String bluetooth_address;
+        public String period;
         public String message;
     }
 
     public static class SubjectAttendanceSummary {
-        public int total_present;
-        public int total_attendance;
+        public String total_present;
+        public String total_attendance;
         public String message;
     }
 
@@ -48,7 +54,14 @@ public class Models {
 
     public static class SubjectAttendanceDatewise {
         public String date;
-        public String attendanceStatus;
+        public boolean presence_flag;
+        public int period;
         public String message;
+    }
+
+    public static class Login {
+        public String token;
+        public String message;
+        public String duration;
     }
 }

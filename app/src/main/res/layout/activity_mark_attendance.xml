@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.attend.MarkAttendance">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,7 +46,7 @@
                     android:src="@drawable/student" />
 
                 <TextView
-                    android:id="@+id/studentName"
+                    android:id="@+id/teacherName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Himanshu Jindal"
@@ -158,18 +156,18 @@
                     android:id="@+id/date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="97"
                     android:gravity="center"
                     android:text="2016-12-15"
-                    android:textSize="16dp"
-                    android:layout_weight="97"/>
+                    android:textSize="16dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:gravity="end"
                     android:text=":"
-                    android:textSize="16dp"
-                    android:layout_weight="3"/>
+                    android:textSize="16dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -183,9 +181,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center|fill"
-                    android:text="Class Ongoing"
-                    android:textSize="16dp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="Not Ongoing"
+                    android:textColor="#F44336"
+                    android:textSize="16dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -207,18 +206,18 @@
                     android:id="@+id/inTime"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="97"
                     android:gravity="center"
                     android:text="In Time"
-                    android:textSize="16dp"
-                    android:layout_weight="97"/>
+                    android:textSize="16dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:gravity="end"
                     android:text=":"
-                    android:textSize="16dp"
-                    android:layout_weight="3"/>
+                    android:textSize="16dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -232,7 +231,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Attendance Marked"
                     android:textSize="16dp" />
             </LinearLayout>
         </LinearLayout>
@@ -255,18 +253,18 @@
                     android:id="@+id/outTime"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="97"
                     android:gravity="center"
                     android:text="Out TIme"
-                    android:textSize="16dp"
-                    android:layout_weight="97"/>
+                    android:textSize="16dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:gravity="end"
                     android:text=":"
-                    android:textSize="16dp"
-                    android:layout_weight="3"/>
+                    android:textSize="16dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -303,18 +301,18 @@
                     android:id="@+id/status"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="97"
                     android:gravity="center"
                     android:text="Status"
-                    android:textSize="16dp"
-                    android:layout_weight="97" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:gravity="end"
                     android:text=":"
-                    android:textSize="16dp"
-                    android:layout_weight="3"/>
+                    android:textSize="16dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -328,9 +326,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center|fill"
-                    android:text="Full Attendance Marked"
-                    android:textSize="16dp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="Not Marked"
+                    android:textColor="#F44336"
+                    android:textSize="16dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -342,10 +341,11 @@
             android:paddingTop="10dp">
 
             <ImageView
+                android:id="@+id/takePicture"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:src="@drawable/avatar" />
+                android:src="@drawable/avatar"/>
         </LinearLayout>
 
         <LinearLayout
@@ -359,6 +359,7 @@
                 android:id="@+id/noteClickPicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:gravity="center"
                 android:text="(Click the above avatar to take a picture)" />
         </LinearLayout>
@@ -366,19 +367,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="bottom|fill_vertical">
+            android:layout_gravity="bottom|fill_vertical"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custombutton"
+                    android:onClick="verifyImage"
                     android:paddingTop="10dp"
-                    android:text="submit picture"
+                    android:text="mark in time"
                     android:textColor="#ffffff" />
             </LinearLayout>
 
