@@ -1,7 +1,6 @@
 package com.attend.utils;
 
 import android.graphics.Bitmap;
-import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -34,61 +33,10 @@ public class VolleyHandler {
         return mInstance;
     }
 
-    //Create an object to return the server's response
-    public class ApiResult {
-        public Integer success;
-        public String message;
-        public Object data;
-
-        //check what kind of data is returned in the json
-        public boolean dataIsArray() {
-            return (data != null && data instanceof JSONArray);
-        }
-
-        public boolean dataIsObject() {
-            return (data != null && data instanceof JSONObject);
-        }
-
-        public boolean dataIsInteger() {
-            return (data != null && data instanceof Integer);
-        }
-
-        //return the data properly casted
-        public JSONArray getDataAsArray() {
-            if (this.dataIsArray()) {
-                return (JSONArray) this.data;
-            } else {
-                return null;
-            }
-        }
-
-        public JSONObject getDataAsObject() {
-            if (this.dataIsObject()) {
-                return (JSONObject) this.data;
-            } else {
-                return null;
-            }
-        }
-
-        public Integer getDataAsInteger() {
-            if (this.dataIsInteger()) {
-                return (Integer) this.data;
-            } else {
-                return null;
-            }
-        }
-
-    }
-
-    //create an interface with a callback method
-    public interface ApiResponse<T> {
-        public void onCompletion(T result);
-    }
-
     //Create a get request with the url to query, and a callback
     public void RequestApi(String url, final ApiResponse<ApiResult> completion) {
         Log.v("Performing request: ", url);
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -132,7 +80,7 @@ public class VolleyHandler {
 
     public void RequestApiAuth(String url, final String authToken, final ApiResponse<ApiResult> completion) {
         Log.v("Performing request: ", url);
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -178,7 +126,7 @@ public class VolleyHandler {
         };
 
         //In case the server is a bit slow and we experience timeout errors﹕ error => com.android.volley.TimeoutError
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+       // jsonRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
         AppController.getInstance().addToRequestQueue(jsonRequest);
 
     }
@@ -288,6 +236,7 @@ public class VolleyHandler {
                 res.success = -1;
                 try {
                     JSONObject result = new JSONObject(resultResponse);
+                    Log.i("VolleyHandler", resultResponse);
                     res.data = result.getJSONObject("data");
                     res.success = result.getInt("status");
                     res.message = result.getString("message");
@@ -303,6 +252,7 @@ public class VolleyHandler {
             public void onErrorResponse(VolleyError error) {
                 ApiResult res = new ApiResult();
                 res.success = -1;
+                Log.i("VolleyHandler", error.toString());
                 res.message = displayVolleyResponseError(error);
                 completion.onCompletion(res);
             }
@@ -320,7 +270,10 @@ public class VolleyHandler {
                 return params;
             }
         };
-
+        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().addToRequestQueue(multipartRequest);
     }
 
@@ -347,6 +300,57 @@ public class VolleyHandler {
 //        } else {
 //            return Resources.getSystem().getString(R.string.error_unknown);
 //        }
+    }
+
+    //create an interface with a callback method
+    public interface ApiResponse<T> {
+        void onCompletion(T result);
+    }
+
+    //Create an object to return the server's response
+    public class ApiResult {
+        public Integer success;
+        public String message;
+        public Object data;
+
+        //check what kind of data is returned in the json
+        public boolean dataIsArray() {
+            return (data != null && data instanceof JSONArray);
+        }
+
+        public boolean dataIsObject() {
+            return (data != null && data instanceof JSONObject);
+        }
+
+        public boolean dataIsInteger() {
+            return (data != null && data instanceof Integer);
+        }
+
+        //return the data properly casted
+        public JSONArray getDataAsArray() {
+            if (this.dataIsArray()) {
+                return (JSONArray) this.data;
+            } else {
+                return null;
+            }
+        }
+
+        public JSONObject getDataAsObject() {
+            if (this.dataIsObject()) {
+                return (JSONObject) this.data;
+            } else {
+                return null;
+            }
+        }
+
+        public Integer getDataAsInteger() {
+            if (this.dataIsInteger()) {
+                return (Integer) this.data;
+            } else {
+                return null;
+            }
+        }
+
     }
 
 }

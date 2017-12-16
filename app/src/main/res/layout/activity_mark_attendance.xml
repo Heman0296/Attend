@@ -182,7 +182,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center|fill"
                     android:gravity="center"
-                    android:text="Class Ongoing"
+                    android:text="Not Ongoing"
+                    android:textColor="#F44336"
                     android:textSize="16dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -326,7 +327,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center|fill"
                     android:gravity="center"
-                    android:text="Full Attendance Marked"
+                    android:text="Not Marked"
+                    android:textColor="#F44336"
                     android:textSize="16dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -377,6 +379,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custombutton"
+                    android:onClick="verifyImage"
                     android:paddingTop="10dp"
                     android:text="mark in time"
                     android:textColor="#ffffff" />

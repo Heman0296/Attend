@@ -12,8 +12,8 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".AppController"
@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:label="Attend">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".Home"
-            android:label="@string/title_activity_home"
+            android:label="Attend"
             android:theme="@style/AppTheme.NoActionBar">
 
             <!--
@@ -52,7 +52,7 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".MarkAttendance">
+        <activity android:name=".MarkAttendance" android:label="Attend">
 
             <!--
             <intent-filter>
@@ -62,7 +62,7 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".AttendanceSummaryDetail">
+        <activity android:name=".AttendanceSummaryDetail" android:label="Attend">
 
             <!--
             <intent-filter>
@@ -72,8 +72,8 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".BlinkDetection" />
-        <activity android:name=".RangingActivity"></activity>
+        <activity android:name=".BlinkDetection" android:label="Attend" />
+        <activity android:name=".RangingActivity" android:label="Attend" />
     </application>
 
 </manifest>

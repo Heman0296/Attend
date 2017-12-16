@@ -23,6 +23,11 @@ public class Models {
         public String message;
     }
 
+    public static class MarkAttendanceOnServer{
+        public String marked;
+        public String message;
+    }
+
     public static class ClassesOfDay {
         public String subject;
         public String classroom;
@@ -30,6 +35,7 @@ public class Models {
         public String end_time;
         public String faculty_name;
         public String bluetooth_address;
+        public String period;
         public String message;
     }
 

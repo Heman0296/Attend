@@ -8,10 +8,11 @@ import java.io.Serializable;
 
 public class ClassList implements Serializable {
 
-    private String subject, classroom, begin_time, end_time, faculty_name, bluetooth_address;
+    private String subject, classroom, begin_time, end_time, faculty_name, bluetooth_address, period;
 
-    public ClassList(String subject, String classroom, String begin_time, String end_time, String faculty_name, String bluetooth_address) {
+    public ClassList(String subject, String classroom, String begin_time, String end_time, String faculty_name, String bluetooth_address, String period) {
         this.subject = subject;
+        this.period = period;
         this.classroom = classroom;
         this.begin_time = begin_time;
         this.end_time = end_time;
@@ -26,6 +27,10 @@ public class ClassList implements Serializable {
     public void setNameOfClass(String subject) {
         this.subject = subject;
     }
+
+    public String getPeriod(){ return period; }
+
+    public void setPeriod(String period){ this.period = period; }
 
     public String getLocation() {
         return classroom;

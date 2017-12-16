@@ -71,8 +71,8 @@ public class RangingActivity extends Activity implements BeaconConsumer {
                 countDown += 1;
                 Log.i("RangingActivity", "Search for beacon in progress");
                 //TODO: change if condition to countDown >= 60
-                if(countDown >= 1) {
-                    boolean connectionStatus = false;
+                if(countDown >= 60) {
+                    String connectionStatus = "false";
                     Intent intent = new Intent(RangingActivity.this, MarkAttendance.class);
                     intent.putExtra("connectionStatus", connectionStatus);
                     intent.putExtra("classObject", classObject);
@@ -85,7 +85,7 @@ public class RangingActivity extends Activity implements BeaconConsumer {
                     Double distance = firstBeacon.getDistance();
                     Log.i("RangingActivity", "The first beacon " + beaconName + " is about " + distance + " meters away.");
                     if(beaconName.equals(id1) && distance < 5) {
-                        boolean connectionStatus = true;
+                        String connectionStatus = "true";
                         Intent intent = new Intent(RangingActivity.this, MarkAttendance.class);
                         intent.putExtra("connectionStatus", connectionStatus);
                         intent.putExtra("classObject", classObject);
@@ -122,6 +122,10 @@ public class RangingActivity extends Activity implements BeaconConsumer {
 
                 builder.show();
             }
+            else{
+                HiveProgressView hiveProgressView = (HiveProgressView) findViewById(R.id.hiveProgressView);
+                hiveProgressView.setVisibility(View.VISIBLE);
+            }
         }
         Log.d("Permission", "checkPermission: Permission Checked");
     }
@@ -142,7 +146,7 @@ public class RangingActivity extends Activity implements BeaconConsumer {
 
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-                            boolean connectionStatus = false;
+                            String connectionStatus = "false";
                             Intent intent = new Intent(RangingActivity.this, MarkAttendance.class);
                             intent.putExtra("connectionStatus", connectionStatus);
                             intent.putExtra("classObject", classObject);
@@ -158,4 +162,8 @@ public class RangingActivity extends Activity implements BeaconConsumer {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

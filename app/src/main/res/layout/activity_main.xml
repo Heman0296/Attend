@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:text="Welcome"
-        android:textColor="@color/caldroid_black"
+        android:textColor="@color/colorPrimary"
         android:textSize="30dp"/>
 
     <android.support.design.widget.TextInputLayout
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:background="@drawable/custombutton"
+        android:onClick="verifyLogin"
         android:text="Sign In"
         android:textColor="#ffffff"/>
 

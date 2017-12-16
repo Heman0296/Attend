@@ -1,5 +1,6 @@
 package com.attend;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.attend.routes.FaceRecognitionRoutes;
 import com.attend.routes.StudentRoutes;
@@ -18,11 +20,17 @@ import com.attend.utils.VolleyHandler;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static ProgressDialog myDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button button = (Button) findViewById(R.id.button);
+
+        myDialog = new ProgressDialog(this);
+        myDialog.setMessage("Please wait...");
+        myDialog.setCancelable(false);
 
         SharedPreferences prfs = getSharedPreferences("AUTHENTICATION_FILE_NAME", Context.MODE_PRIVATE);
         String authenticationstatus = prfs.getString("Authentication_Status", null);
@@ -34,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+        /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.roll_no);
@@ -48,7 +56,21 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-        });
+        });*/
+    }
+
+    public void verifyLogin(View v) {
+        TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.roll_no);
+        String roll_number = textInputLayout.getEditText().getText().toString();
+        Log.v("MainActivity", roll_number);
+        textInputLayout = (TextInputLayout) findViewById(R.id.password);
+        String password = textInputLayout.getEditText().getText().toString();
+        Log.v("MainActivity", password);
+
+        myDialog.show();
+        login(roll_number, password);
+
+
     }
 
     public void loginSuccessfull(String roll_number, String password) {
@@ -66,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this.getApplication(), Home.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        myDialog.dismiss();
         startActivity(intent);
     }
 
@@ -90,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
             public void onCompletion(Models.Login login) {
                 if(login.message != null && login.message.equals("SUCCESS")) {
                     loginSuccessfull(rollno, password);
+                }
+                else{
+                    myDialog.dismiss();
+                    Toast.makeText(getApplication(), "Unable to login",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });

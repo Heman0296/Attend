@@ -228,6 +228,8 @@ public class BlinkDetection extends AppCompatActivity {
         Intent intent1 = getIntent();
         final ClassList classObject = (ClassList) intent1.getSerializableExtra("classObject");
         intent.putExtra("classObject", classObject);
+        String connectionStatus = intent1.getStringExtra("connectionStatus");
+        intent.putExtra("connectionStatus", connectionStatus);
 
 //        final byte[][] data = new byte[1][1];
         final CountDownLatch latch=new CountDownLatch(1);
@@ -263,4 +265,8 @@ public class BlinkDetection extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }
